@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>佳美教育訓練</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- LIFF 進入點：https://liff.line.me/{LIFF ID}/頁面.html 會先開這頁，liff.init 後自動轉到該頁面 -->
+  <div id="app"><div class="loading">載入中…</div></div>
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    App.init().then(function () {
+      if (new URLSearchParams(location.search).get('liff.state')) return; // LIFF SDK 正在轉頁
+      document.getElementById('app').innerHTML =
+        '<div class="card"><h2>佳美教育訓練</h2><p>請從 LINE 官方帳號的訊息或選單開啟功能。</p></div>';
+    }).catch(function (e) { App.showFatal(e.message); });
+  </script>
+</body>
+</html>

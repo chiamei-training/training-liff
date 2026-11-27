@@ -70,7 +70,7 @@
       '<h2>' + esc(c.name) + '</h2>' +
       '<dl class="info">' +
       info('主講人', c.instructor) + info('時數', c.hours === '' ? '' : c.hours + ' 小時') +
-      info('評量方式', c.evalNames) + info('主辦部門', c.hostDept) + info('主要對象', c.mainTarget) +
+      info('評量方式', c.evalNames) + info('主要對象', c.mainTarget) +
       '</dl><p class="hint">以上資料來自 MIS，如需修改請在 MIS 修改。</p></div>' +
 
       '<form class="card" id="form">' +
@@ -79,8 +79,7 @@
       '<label>開始時間<span class="req">*</span><input type="time" id="startTime" value="' + esc(c.startTime) + '"></label>' +
       '<label>結束時間<span class="req">*</span><input type="time" id="endTime" value="' + esc(c.endTime) + '"></label>' +
       '</div><p class="hint" id="durationHint"></p>' +
-      '<label>地點<span class="req">*</span><input type="text" id="location" maxlength="100" list="locations" value="' + esc(c.location) + '" placeholder="例如：大會議室"></label>' +
-      '<datalist id="locations">' + r.locations.map(function (l) { return '<option value="' + esc(l) + '">'; }).join('') + '</datalist>' +
+      '<label>地點<span class="req">*</span>' + locationSelect(r.locations, c.location) + '</label>' +
       '<label>課程大綱<textarea id="outline" rows="6" maxlength="2000" placeholder="選填，會顯示在課程通知上">' + esc(c.outline) + '</textarea></label>' +
       '<p class="hint">標 <span class="req">*</span> 的欄位都填好後，課程狀態會變成「待發佈」；可先儲存部分資料。</p>' +
       '<button class="btn" id="saveBtn">儲存</button>' +
@@ -126,6 +125,17 @@
         btn.textContent = '儲存';
       }
     };
+  }
+
+  // 選項來自 Admin_Config.course_locations；課程原本的地點不在選項中時仍保留顯示
+  function locationSelect(options, current) {
+    const list = options.slice();
+    if (current && list.indexOf(current) < 0) list.unshift(current);
+    return '<select id="location"><option value="">請選擇地點</option>' +
+      list.map(function (l) {
+        return '<option value="' + esc(l) + '"' + (l === current ? ' selected' : '') + '>' + esc(l) +
+          (options.indexOf(l) < 0 ? '（原設定）' : '') + '</option>';
+      }).join('') + '</select>';
   }
 
   function info(label, value) {
